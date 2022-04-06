@@ -38,6 +38,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.client.Notifier;
@@ -56,12 +57,14 @@ class ScreenshotOverlay extends Overlay
 	private final Client client;
 	private final DrawManager drawManager;
 	private final ScreenshotPlugin plugin;
-	private final Notifier notifier;
 
 	private final Queue<Consumer<Image>> consumers = new ConcurrentLinkedQueue<>();
 
 	@Inject
-	private ScreenshotOverlay(Client client, DrawManager drawManager, ScreenshotPlugin plugin, Notifier notifier)
+	private Notifier notifier;
+
+	@Inject
+	private ScreenshotOverlay(Client client, DrawManager drawManager, ScreenshotPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
@@ -69,7 +72,6 @@ class ScreenshotOverlay extends Overlay
 		this.client = client;
 		this.drawManager = drawManager;
 		this.plugin = plugin;
-		this.notifier = notifier;
 	}
 
 	@Override
